@@ -4,16 +4,16 @@
 	main:
 		li $a1, 9 # array length
 		
-		li $t0, 0
+		li $t0, 0 # i = 0
 		while:
-			bgt $t0, $a1, endWhile # while i < a1
+			bgt $t0, $a1, endWhile # while i < len(array)
 			
 			lb $a0, array($t0) # a0 = array + i
 			
 			# if (v1 < a0)
 			slt $t2, $v1, $a0
 			beq $t2, $zero, endIf
-			move $v1, $a0 # if true: v1 = a0
+				move $v1, $a0 # if true: v1 = a0
 			endIf:
 			
 			addi $t0, $t0, 1 # i++
