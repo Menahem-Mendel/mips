@@ -64,11 +64,11 @@
 		endWhile:
 		
 		# ask to write opcode
-         	la $a0, result
-         	jal printStr
-         	
-         	la $a0, ($t5) # arg = res
-         	jal printInt
+		la $a0, result
+		jal printStr
+		
+		la $a0, ($t5) # arg = res
+		jal printInt
 	
 	# end program
 	li $v0, 10
