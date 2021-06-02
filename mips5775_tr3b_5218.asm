@@ -17,8 +17,9 @@
 		beq $s0, $zero, IfAP
 		jal checkGP
 		beq $s0, $zero, IfGP
+			# print non
 			li $v0, 4
-			la $a0, non
+			la $a0, non 
 			syscall
 		
 			j endIfP
@@ -29,6 +30,7 @@
 			jal printGP
 			j print
 		print:
+			# print a=$arr[0]
 			li $v0, 11
 			li $a0, 'a'
 			syscall
@@ -47,7 +49,7 @@
 	syscall
 	
 	checkAP:
-		li $s0, 0
+		li $s0, 0 # return true
 		
 		lb $t1, arr # t1 = array[0]
 		lb $t2, arr+1 # t2 = array[1]
@@ -64,7 +66,7 @@
 			sub $t3, $t2, $t1 # d = A(n+1)-A(n)
 			
 			beq $t4, $t3, endIf2
-				li $s0, 1
+				li $s0, 1 # return false
 				j endWhile2
 			endIf2:
 			
@@ -86,7 +88,7 @@
 		jr $ra
 		
 	checkGP:
-		li $s0, 0
+		li $s0, 0 # return true
 		
 		lb $t1, arr # t1 = array[0]
 		lb $t2, arr+1 # t2 = array[1]
@@ -103,7 +105,7 @@
 			div $t3, $t2, $t1 # d = A(n+1)/A(n)
 			
 			beq $t4, $t3, endIf1
-				li $s0, 1
+				li $s0, 1 # return false
 				j endWhile1
 			endIf1:
 			
