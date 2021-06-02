@@ -14,14 +14,14 @@
 		lb $t3, opcodes+3 # @
 		
 		# ask to write value
-         	la $a0, value
-         	jal printStr
-         	
-         	# get integer
-         	la $v0, 5
-         	syscall
-         		
-         	move $t5, $v0 # res = input
+		la $a0, value
+		jal printStr
+		
+		# get integer
+		la $v0, 5
+		syscall
+			
+		move $t5, $v0 # res = input
 		
 		while:
 			# ask to write opcode

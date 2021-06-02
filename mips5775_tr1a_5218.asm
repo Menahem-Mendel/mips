@@ -7,7 +7,7 @@
 		lw $t1, len # length of array
 		la $a0, src # source address
 		la $a1, dest # destination address
-		li $t0, 1 # i = 0
+		li $t0, 0 # i = 0
 		while:
  			bgt $t0, $t1, endWhile # while i < len
  			
