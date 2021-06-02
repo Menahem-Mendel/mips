@@ -1,6 +1,3 @@
-.data 0x10010020
-mem1:
-.word 1234
 .data
 	src: .word 1, 2, 3, 0, 4, 5, 6, 0 # source
 	dest: .space 32 # destination
