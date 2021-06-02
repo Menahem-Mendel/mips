@@ -1,4 +1,3 @@
-#bubble sort
 .data 
 	arr: .word 6,6,5,4,3,2,1,5
 	len: .word 8
