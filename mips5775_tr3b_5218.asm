@@ -1,5 +1,5 @@
 .data
-	arr: .byte 1,2,4,8,164
+	arr: .byte 1,2,4,8
 	len: .word 5
 	
 	ap: .asciiz "This is arithmetic progression\n"

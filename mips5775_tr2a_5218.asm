@@ -1,5 +1,5 @@
 .data
-	array: .byte 1,2,3,4,7,6,5,8,127
+	arr: .byte 1,2,3,4,7,6,5,8,127
 .text
 	main:
 		li $a1, 9 # array length
@@ -8,7 +8,7 @@
 		while:
 			bgt $t0, $a1, endWhile # while i < len(array)
 			
-			lb $a0, array($t0) # a0 = array + i
+			lb $a0, arr($t0) # a0 = array + i
 			
 			# if (v1 < a0)
 			slt $t2, $v1, $a0
