@@ -1,123 +1,86 @@
 .data
-	askArr: .asciiz "Please enter sequence of 32 elemnts\n"
-	askBase: .asciiz "Please enter base sequence with 6 elements\n"
-	
-	base: .byte 0:2
-	arr: .byte 0:6
-	len: .word 5
-	
-	subseq: .byte 0
+	tru: .asciiz "\ntrue"
+	fal: .asciiz "\nfalse"
+	space: .asciiz " "
+	arr: .byte 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32
+	base: .space 6
+	lenBase: .word 6
+	lenArr: .word 32
 .text
 .globl main
-	main:
-		# ask array sequence
-		li $v0, 4
-		la $a0, askArr
+main:
+	li $t0, 0
+	while:
+		bgt $t0, 5, endWhile
+		
+		li $v0, 5
 		syscall
+		sb $v0, base($t0) 
 		
-		lw $a1, len # the length of array
-		li $t0, 0 # i = 0
-		while1:
-			bgt $t0, $a1, endWhile1 # while i < len(array)
-			
-			# read input integer
-			li $v0, 5
-			syscall
-			sb $v0, arr($t0) # arr[i] = input
-			
-			addi $t0, $t0, 1 # i++
-			j while1
-		endWhile1:
-		
-		# ask base sequence
-		li $v0, 4
-		la $a0, askBase
-		syscall
-		
-		li $t0, 0 # i = 0
-		while2:
-			bgt $t0, 1, endWhile2 # while i < len(array)
-			
-			# read input integer
-			li $v0, 5
-			syscall
-			sb $v0, base($t0) # base[i] = input
-			
-			addi $t0, $t0, 1 # i++
-			j while2
-		endWhile2:
-		
-		lw $a0, len # the length of array
-		li $a1, 5 # the lenght of base
-		jal isSubseq
-		sw $v0, subseq
+		addi $t0, $t0, 1
+		j while
+	endWhile:
 	
-	# end program
-	li $v0, 10
-	syscall
+	la $a0, arr
+	lw $t7, lenArr
+	whileOuter:
+		ble $t7, $t6 false
+		
+		la $a1, base
+		lw $t6, lenBase
+		whileInner:
+			blez $t6, true
+			
+			lb $t0, ($a1)
+			lb $t1, ($a0)
+			
+			bne $t0, $t1, continue
+			
+			subi $t6, $t6, 1
+			addi $a0, $a0, 1
+			addi $a1, $a1, 1
+			j whileInner
+		endWhileInner:
+		
+		continue:
+		subi $t7, $t7, 1
+		addi $a0, $a0, 1
+		j whileOuter
 
-.globl isSubseq
-	isSubseq:
-		subu $sp, $sp, 12
-		sw $ra, ($sp)
-		sw $s0, 4($sp)
-		sw $s1, 8($sp)
-		
-		move $s0, $a0
-		move $s1, $a1
-		
-		# base case
-		seq $s3, $zero, $s0
-		beq $s0, $zero, endSubseq
-		seq $s3, $zero, $s1
-		beq $s1, $zero, endSubseq
-		
-		lb $t0, arr($s0)
-		lb $t1, base($s1)
-		
-		bne $t0, $t1, else
-			# isSubseq(lenArr - 1, lenBase - 1)
-			sub $a0, $a0, 1
-			sub $s1, $s1, 1
-			jal isSubseq
-			j endIf
-		else:
-			# isSubseq(lenArr, lenBase - 1)
-			move $s0, $a0
-			move $s1, $a1
-			sub $s0, $s0, 1
-			sub $s1, $s1, 1
-			jal isSubseq
-		endIf:
-		
-		
-		
-		endSubseq:
-			lw $ra, ($sp)
-			lb $s0, 4($sp)
-			addu $sp, $sp, 12
-			
-			jr $ra
-		
-		
+		true: 
+			li $v0, 4
+			la $a0, tru
+			syscall
+			j endwhileOuter
+
+		false:
+			li $v0, 4
+			la $a0, fal
+			syscall
+			j endwhileOuter
+	endwhileOuter:
 	
-		#li $t0, 0 # i = 0
-		#outer:
-		#	bgt $t0, $a1, endOuter # while i < len(array)
-		#	li $t1, 0
-		#	inner:
-		#		bgt $t0, 1, endInner # while i < len(array)
-		#		
-		#		lb $t3, arr($t0)
-		#		lb $t4, base($t1)
-		#		bne $t3, $t4, outer
-		#			addi $t0, $t0, 1
-		#			addi $t1, $t1, 1
-		#		j inner
-		#	endInner:
-		#	
-		#	addi $t0, $t0, 1
-		#	j outer
-		#endOuter:
-		#
-		#jr $ra
+	li $v0, 11
+	li $a0, 10
+	syscall
+		
+	li $t0, 0
+	print:
+		bgt $t0, 5, endPrint
+		
+		li $v0, 1
+		lb $a0, base($t0)
+		syscall
+		
+		li $v0, 11
+		li $a0, 32
+		syscall
+		
+		addi $t0, $t0, 1
+		j print
+	endPrint:
+	
+# end program
+li $v0, 10
+syscall
+	
