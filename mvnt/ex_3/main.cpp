@@ -1,3 +1,6 @@
+//Roei Barak - 318419611
+//Mendel Gelfand - 342795218
+
 #include <iostream>
 #include <list>
 #include <string>
@@ -37,8 +40,10 @@ int main()
 		case '2':
 			cout << "Enter a word to del " << endl;
 			cin >> wrd;
-			// if (!tr.del(wrd))
-			// 	cout << "ERROR\n";
+			if (!tr.search(wrd))
+				cout << "ERROR\n";
+			else
+				tr.del(wrd);
 			break;
 		case '3':
 			cout << "Enter a word to search " << endl;
@@ -47,13 +52,13 @@ int main()
 				cout << "exists\n";
 			else
 				cout << "does not exist\n";
+
 			break;
 
 		case '4':
 			cout << "Enter a prefix to complete " << endl;
 			cin >> wrd;
-			// comp = tr.printAutoSuggestions(wrd);
-
+			comp = tr.printAutoSuggestions(wrd);
 			if (comp == 0)
 				cout << "No string exist with this prefix\n";
 			break;

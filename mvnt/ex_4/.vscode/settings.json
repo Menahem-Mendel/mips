@@ -1,0 +1,8 @@
+{
+	"files.associations": {
+		"*.gohtml": "html",
+		"queue": "cpp",
+		"xtree": "cpp",
+		"xstring": "cpp"
+	}
+}
