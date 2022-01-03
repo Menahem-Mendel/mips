@@ -83,22 +83,22 @@ string HuffmanTree::Decode(string s)
 {
 	string out;
 
-	HuffmanTree::HuffmanNode *curr = root;
+	// HuffmanTree::HuffmanNode *curr = root;
 
-	for (int i = 0; i < s.size(); i++)
-	{
-		if (s[i] == '0')
-			curr = curr->left;
-		else
-			curr = curr->right;
+	// for (int i = 0; i < s.size(); i++)
+	// {
+	// 	if (s[i] == '0')
+	// 		curr = curr->left;
+	// 	else
+	// 		curr = curr->right;
 
-		// reached leaf node
-		if (curr->left == NULL && curr->right == NULL)
-		{
-			out += curr->data;
-			curr = root;
-		}
-	}
+	// 	// reached leaf node
+	// 	if (curr->left == NULL && curr->right == NULL)
+	// 	{
+	// 		out += curr->data;
+	// 		curr = root;
+	// 	}
+	// }
 
 	return out + '\0';
 }
@@ -115,7 +115,7 @@ void HuffmanTree::storeCodes(HuffmanTree::HuffmanNode *n, string str)
 	storeCodes(n->right, str + "1");
 }
 
-// storeCodes stores all letters with its codes in class variable of type map
+// printCodes prints all letter codes by tree leaves order
 void HuffmanTree::printCodes(HuffmanTree::HuffmanNode *n, string str)
 {
 	if (n == NULL)
@@ -127,7 +127,7 @@ void HuffmanTree::printCodes(HuffmanTree::HuffmanNode *n, string str)
 	printCodes(n->right, str + "1");
 }
 
-// storeCodes stores all letters with its codes in class variable of type map
+// printChars prints all letters by tree leaves order
 void HuffmanTree::printChars(HuffmanTree::HuffmanNode *n)
 {
 	if (n == NULL)
