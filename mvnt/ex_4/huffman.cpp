@@ -65,13 +65,9 @@ string HuffmanTree::Encode(string s)
 	storeCodes(heap.top(), "");
 
 	cout << codes.size() << endl; // print number of letters
-	// print unique letters
-	for (map<char, string>::iterator i = codes.begin(); i != codes.end(); i++)
-		cout << i->first;
+	printChars(heap.top());		  // print unique letters
 	cout << endl;
-	// print unique letter codes
-	for (map<char, string>::iterator i = codes.begin(); i != codes.end(); i++)
-		cout << codes.at(i->first);
+	printCodes(heap.top(), ""); // print unique letter codes
 	cout << endl;
 
 	// return encoded string
@@ -117,4 +113,28 @@ void HuffmanTree::storeCodes(HuffmanTree::HuffmanNode *n, string str)
 
 	storeCodes(n->left, str + "0");
 	storeCodes(n->right, str + "1");
+}
+
+// storeCodes stores all letters with its codes in class variable of type map
+void HuffmanTree::printCodes(HuffmanTree::HuffmanNode *n, string str)
+{
+	if (n == NULL)
+		return;
+	if (n->data != '$')
+		cout << str;
+
+	printCodes(n->left, str + "0");
+	printCodes(n->right, str + "1");
+}
+
+// storeCodes stores all letters with its codes in class variable of type map
+void HuffmanTree::printChars(HuffmanTree::HuffmanNode *n)
+{
+	if (n == NULL)
+		return;
+	if (n->data != '$')
+		cout << n->data;
+
+	printChars(n->left);
+	printChars(n->right);
 }

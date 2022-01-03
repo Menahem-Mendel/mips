@@ -29,6 +29,8 @@ class HuffmanTree
 	map<char, string> codes;
 
 	void storeCodes(HuffmanNode *, string);
+	void printCodes(HuffmanNode *, string);
+	void printChars(HuffmanNode *);
 
 public:
 	HuffmanTree();
