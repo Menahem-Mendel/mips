@@ -3,6 +3,7 @@
 		"*.gohtml": "html",
 		"queue": "cpp",
 		"xtree": "cpp",
-		"xstring": "cpp"
+		"xstring": "cpp",
+		"vector": "cpp"
 	}
 }

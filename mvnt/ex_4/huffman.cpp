@@ -27,7 +27,7 @@ string HuffmanTree::Encode(string s)
 	root = NULL;
 	codes.clear();
 
-	// s.erase(std::remove_if(s.begin(), s.end(), ::isspace), s.end());
+	s.erase(std::remove_if(s.begin(), s.end(), ::isspace), s.end());
 
 	// build frequencies map
 	map<char, int> freq;
@@ -61,10 +61,8 @@ string HuffmanTree::Encode(string s)
 		heap.push(root);
 	}
 
-	// build letter codes map
-	storeCodes(heap.top(), "");
-
-	cout << codes.size() << endl; // print number of letters
+	storeCodes(heap.top(), "");	  // build letter codes map
+	cout << codes.size() << endl; // print count of letters
 	printChars(heap.top());		  // print unique letters
 	cout << endl;
 	printCodes(heap.top(), ""); // print unique letter codes
@@ -73,7 +71,7 @@ string HuffmanTree::Encode(string s)
 	// return encoded string
 	string out;
 	for (int i = 0; i < s.size(); i++)
-		out += codes.at(s.at(i));
+		out += codes.at(s.at(i)) + " ";
 
 	return out;
 }
@@ -121,7 +119,7 @@ void HuffmanTree::printCodes(HuffmanTree::HuffmanNode *n, string str)
 	if (n == NULL)
 		return;
 	if (n->data != '$')
-		cout << str;
+		cout << str << " ";
 
 	printCodes(n->left, str + "0");
 	printCodes(n->right, str + "1");
@@ -133,7 +131,7 @@ void HuffmanTree::printChars(HuffmanTree::HuffmanNode *n)
 	if (n == NULL)
 		return;
 	if (n->data != '$')
-		cout << n->data;
+		cout << n->data << " ";
 
 	printChars(n->left);
 	printChars(n->right);

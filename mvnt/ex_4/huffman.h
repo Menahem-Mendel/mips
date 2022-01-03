@@ -7,9 +7,8 @@ using namespace std;
 
 class HuffmanTree
 {
-	class HuffmanNode
+	struct HuffmanNode
 	{
-	public:
 		char data;
 		unsigned freq;
 		HuffmanNode *left, *right;
