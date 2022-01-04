@@ -44,6 +44,7 @@ int main()
 			string letters, treeStructure, encodedText;
 			cout << "enter n " << endl;
 			cin >> n;
+
 			cout << "enter the letters " << endl;
 			cin >> letters;
 			cout << "enter the encoded structure " << endl;
