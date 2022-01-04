@@ -13,7 +13,7 @@ using namespace std;
 // HuffmanTree default ctor
 HuffmanTree::HuffmanTree() {}
 
-string HuffmanTree::Encode(string chars, string codes)
+string HuffmanTree::Decode(string codes, string chars, string encrypted)
 {
 	// vector<Pair> elements;
 	// for (string::iterator iter = letters.begin(); iter != letters.end(); iter++)
@@ -21,7 +21,27 @@ string HuffmanTree::Encode(string chars, string codes)
 
 	// root = new BinaryTree<Pair>(treeStructure, elements, Pair(0));
 	// root->setPaths();
-	return "";
+
+	string out;
+
+	// HuffmanTree::HuffmanNode *curr = root;
+
+	// for (int i = 0; i < encrypted.size(); i++)
+	// {
+	// 	if (s[i] == '0')
+	// 		curr = curr->left;
+	// 	else
+	// 		curr = curr->right;
+
+	// 	// reached leaf node
+	// 	if (curr->left == NULL && curr->right == NULL)
+	// 	{
+	// 		out += curr->data.first;
+	// 		curr = root;
+	// 	}
+	// }
+
+	return out;
 }
 
 // Encode function returns encrypted string
@@ -42,30 +62,7 @@ string HuffmanTree::Encode(string s)
 		freq[s.at(i)]++;
 	}
 
-	// build min heap
-	priority_queue<HuffmanTree::HuffmanNode *, vector<HuffmanTree::HuffmanNode *>, less<HuffmanTree::HuffmanNode *>> heap;
-
-	for (map<char, unsigned>::iterator i = freq.begin(); i != freq.end(); i++)
-		heap.push(new HuffmanTree::HuffmanNode(make_pair(i->first, i->second)));
-
-	HuffmanTree::HuffmanNode *left, *right;
-	while (heap.size() != 1)
-	{
-		left = heap.top();
-		heap.pop();
-		right = heap.top();
-		heap.pop();
-
-		root = new HuffmanTree::HuffmanNode(make_pair('$', left->data.second + right->data.second));
-
-		root->left = left;
-		root->right = right;
-
-		heap.push(root);
-	}
-
-	heap.pop();
-	root = heap.top();
+	*this = HuffmanTree(freq);
 
 	storeCodes(root, ""); // build letter codes map
 
@@ -77,29 +74,32 @@ string HuffmanTree::Encode(string s)
 	return out;
 }
 
-// Decode returns decoded string
-string HuffmanTree::Decode(string s)
+HuffmanTree::HuffmanTree(map<char, unsigned> freq)
 {
-	string out;
+	// build min heap
+	priority_queue<HuffmanTree::HuffmanNode *, vector<HuffmanTree::HuffmanNode *>, less<HuffmanTree::HuffmanNode *>> heap;
 
-	HuffmanTree::HuffmanNode *curr = root;
+	for (map<char, unsigned>::iterator i = freq.begin(); i != freq.end(); i++)
+		heap.push(new HuffmanTree::HuffmanNode(make_pair(i->first, i->second)));
 
-	for (int i = 0; i < s.size(); i++)
+	HuffmanTree::HuffmanNode *left, *right, *top;
+	while (heap.size() != 1)
 	{
-		if (s[i] == '0')
-			curr = curr->left;
-		else
-			curr = curr->right;
+		left = heap.top();
+		heap.pop();
+		right = heap.top();
+		heap.pop();
 
-		// reached leaf node
-		if (curr->left == NULL && curr->right == NULL)
-		{
-			out += curr->data.first;
-			curr = root;
-		}
+		top = new HuffmanTree::HuffmanNode(make_pair('$', left->data.second + right->data.second));
+
+		top->left = left;
+		top->right = right;
+
+		heap.push(top);
 	}
 
-	return out;
+	heap.pop();
+	root = heap.top();
 }
 
 // storeCodes stores all letters with its codes in class variable of type map

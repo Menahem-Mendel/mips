@@ -11,10 +11,11 @@ struct HuffmanTree
 {
 
 	HuffmanTree();
+	HuffmanTree(map<char, unsigned>);
 	HuffmanTree(HuffmanTree &ht);
 
 	string Encode(string);
-	string Encode(string, string);
+	string Decode(string, string, string);
 	string Decode(string);
 
 	string CodeStructure();

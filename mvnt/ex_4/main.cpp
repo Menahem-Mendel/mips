@@ -14,6 +14,7 @@ int main()
 	char choice;
 	HuffmanTree t;
 
+	cout << endl;
 	cout << "enter E to encode a text" << endl;
 	cout << "enter D to decode a text" << endl;
 	cout << "enter X to exit" << endl;
@@ -34,6 +35,7 @@ int main()
 			cout << "The encoded string is" << endl;
 			encrypted = t.Encode(word); // encrypt word
 
+			cout << t.CharStructure().size() << endl;
 			cout << t.CharStructure() << endl; // print all characters
 			cout << t.CodeStructure() << endl; // print all character codes
 			cout << encrypted << endl;		   // print encrypted string
@@ -41,19 +43,18 @@ int main()
 			break;
 		case 'D':
 			int n;
-			string letters, treeStructure, encodedText;
+			string char_structure, code_structure, encoded_word;
 			cout << "enter n " << endl;
 			cin >> n;
 			cout << "enter the letters " << endl;
-			cin >> letters;
+			cin >> char_structure;
 			cout << "enter the encoded structure " << endl;
-			cin >> treeStructure;
+			cin >> code_structure;
 			cout << "enter the encoded text " << endl;
-			cin >> encodedText;
+			cin >> encoded_word;
 			cout << "The decoded string is" << endl;
 
-			// t.Encode(treeStructure, letters);
-			cout << t.Decode(encrypted) << endl;
+			cout << t.Decode(char_structure, code_structure, encrypted) << endl;
 			break;
 		}
 	} while (choice != 'X');
