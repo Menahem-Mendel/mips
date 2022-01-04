@@ -12,6 +12,7 @@ struct HuffmanTree
 
 	HuffmanTree();
 	HuffmanTree(map<char, unsigned>);
+	HuffmanTree(string, string); // reverse ctor
 	HuffmanTree(HuffmanTree &ht);
 
 	string Encode(string);
@@ -26,6 +27,7 @@ struct HuffmanTree
 		pair<char, unsigned> data;
 		HuffmanNode *left, *right;
 
+		HuffmanNode() : data(make_pair('$', 0)), left(NULL), right(NULL){};
 		HuffmanNode(pair<char, unsigned> d) : data(d), left(NULL), right(NULL){};
 		HuffmanNode(pair<char, unsigned> d, HuffmanNode *l, HuffmanNode *r) : data(d), left(l), right(r){};
 		HuffmanNode(const HuffmanNode &hn) : data(hn.data), left(hn.left), right(hn.right){};
@@ -38,7 +40,9 @@ private:
 	HuffmanNode *root;
 	map<char, string> codes;
 
+	void buildTree(string, string, HuffmanNode *, int);
 	void storeCodes(HuffmanNode *, string);
+	string decode(string);
 	string codeStructure(HuffmanNode *, string);
 	string charStructure(HuffmanNode *, string);
 };
