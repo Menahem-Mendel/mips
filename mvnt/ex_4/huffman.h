@@ -2,6 +2,8 @@
 
 #include <string>
 #include <map>
+#include <queue>
+#include <utility>
 
 using namespace std;
 
@@ -9,17 +11,18 @@ class HuffmanTree
 {
 	struct HuffmanNode
 	{
-		char data;
-		unsigned freq;
+		pair<char, unsigned> data;
 		HuffmanNode *left, *right;
 
-		HuffmanNode(char d, unsigned f);
+		HuffmanNode(pair<char, unsigned> d) : data(d), left(NULL), right(NULL){};
+		HuffmanNode(pair<char, unsigned> d, HuffmanNode *l, HuffmanNode *r) : data(d), left(l), right(r){};
+		HuffmanNode(const HuffmanNode &hn) : data(hn.data), left(hn.left), right(hn.right){};
 
-		struct compare
+		struct compareNode
 		{
-			bool operator()(HuffmanNode *l, HuffmanNode *r)
+			bool operator()(HuffmanNode *const &l, HuffmanNode *const &r)
 			{
-				return (l->freq > r->freq);
+				return l->data.second > r->data.second;
 			}
 		};
 	};
@@ -28,13 +31,17 @@ class HuffmanTree
 	map<char, string> codes;
 
 	void storeCodes(HuffmanNode *, string);
-	void printCodes(HuffmanNode *, string);
-	void printChars(HuffmanNode *);
+	string codeStructure(HuffmanNode *, string);
+	string charStructure(HuffmanNode *, string);
 
 public:
 	HuffmanTree();
 	HuffmanTree(HuffmanTree &ht);
 
 	string Encode(string);
+	string Encode(string, string);
 	string Decode(string);
+
+	string CodeStructure();
+	string CharStructure();
 };

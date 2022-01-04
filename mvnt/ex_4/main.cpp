@@ -3,9 +3,8 @@
 
 #include <iostream>
 #include <queue>
-#include <list>
 #include <string>
-#include <cmath>
+
 #include "huffman.h"
 
 using namespace std;
@@ -22,8 +21,9 @@ int main()
 	string encrypted;
 	do
 	{
-		cin >> choice;
 		string word;
+
+		cin >> choice;
 
 		switch (choice)
 		{
@@ -31,27 +31,34 @@ int main()
 			cout << "enter the original text" << endl;
 			cin >> word;
 
-			cout << "The encoded string is:" << endl;
-			encrypted = t.Encode(word);
-			cout << encrypted << endl;
+			cout << "The encoded string is" << endl;
+			encrypted = t.Encode(word); // encrypt word
+
+			cout << t.CharStructure() << endl; // print all characters
+			cout << t.CodeStructure() << endl; // print all character codes
+			cout << encrypted << endl;		   // print encrypted string
+
 			break;
 		case 'D':
-			// int n;
-			// string lt, st, txt;
-			// cout << "enter n ";
-			// cin >> n;
-			// cout << "enter the letters ";
-			// cin >> lt;
-			// cout << "enter the encoded structure ";
-			// cin >> st;
-			// cout << "enter the encoded text ";
-			// cin >> txt;
-			cout << "The decoded string is:" << endl;
+			int n;
+			string letters, treeStructure, encodedText;
+			cout << "enter n " << endl;
+			cin >> n;
+			cout << "enter the letters " << endl;
+			cin >> letters;
+			cout << "enter the encoded structure " << endl;
+			cin >> treeStructure;
+			cout << "enter the encoded text " << endl;
+			cin >> encodedText;
+			cout << "The decoded string is" << endl;
+
+			// t.Encode(treeStructure, letters);
 			cout << t.Decode(encrypted) << endl;
 			break;
 		}
-
 	} while (choice != 'X');
+
+	cout << "bye" << endl;
 
 	return 0;
 }

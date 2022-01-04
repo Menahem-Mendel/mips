@@ -13,13 +13,16 @@ using namespace std;
 // HuffmanTree default ctor
 HuffmanTree::HuffmanTree() {}
 
-// HuffmanNode default ctor
-HuffmanTree::HuffmanNode::HuffmanNode(char d, unsigned f)
+string HuffmanTree::Encode(string chars, string codes)
 {
-	data = d;
-	freq = f;
-	left = right = NULL;
-};
+	// vector<Pair> elements;
+	// for (string::iterator iter = letters.begin(); iter != letters.end(); iter++)
+	//     elements.push_back(Pair(*iter)); // elements.push_back(make_pair(*iter->first, *iter->second));
+
+	// root = new BinaryTree<Pair>(treeStructure, elements, Pair(0));
+	// root->setPaths();
+	return "";
+}
 
 // Encode function returns encrypted string
 string HuffmanTree::Encode(string s)
@@ -30,7 +33,7 @@ string HuffmanTree::Encode(string s)
 	s.erase(std::remove_if(s.begin(), s.end(), ::isspace), s.end());
 
 	// build frequencies map
-	map<char, int> freq;
+	map<char, unsigned> freq;
 	for (int i = 0; i < s.size(); i++)
 	{
 		if (!freq.count(s.at(i)))
@@ -40,10 +43,10 @@ string HuffmanTree::Encode(string s)
 	}
 
 	// build min heap
-	priority_queue<HuffmanTree::HuffmanNode *, vector<HuffmanTree::HuffmanNode *>, HuffmanTree::HuffmanNode::compare> heap;
+	priority_queue<HuffmanTree::HuffmanNode *, vector<HuffmanTree::HuffmanNode *>, HuffmanTree::HuffmanNode::compareNode> heap;
 
-	for (map<char, int>::iterator i = freq.begin(); i != freq.end(); i++)
-		heap.push(new HuffmanTree::HuffmanNode(i->first, i->second));
+	for (map<char, unsigned>::iterator i = freq.begin(); i != freq.end(); i++)
+		heap.push(new HuffmanTree::HuffmanNode(make_pair(i->first, i->second)));
 
 	HuffmanTree::HuffmanNode *left, *right;
 	while (heap.size() != 1)
@@ -53,7 +56,7 @@ string HuffmanTree::Encode(string s)
 		right = heap.top();
 		heap.pop();
 
-		root = new HuffmanTree::HuffmanNode('$', left->freq + right->freq);
+		root = new HuffmanTree::HuffmanNode(make_pair('$', left->data.second + right->data.second));
 
 		root->left = left;
 		root->right = right;
@@ -61,17 +64,15 @@ string HuffmanTree::Encode(string s)
 		heap.push(root);
 	}
 
-	storeCodes(heap.top(), "");	  // build letter codes map
-	cout << codes.size() << endl; // print count of letters
-	printChars(heap.top());		  // print unique letters
-	cout << endl;
-	printCodes(heap.top(), ""); // print unique letter codes
-	cout << endl;
+	heap.pop();
+	root = heap.top();
+
+	storeCodes(root, ""); // build letter codes map
 
 	// return encoded string
 	string out;
 	for (int i = 0; i < s.size(); i++)
-		out += codes.at(s.at(i)) + " ";
+		out += codes.at(s.at(i));
 
 	return out;
 }
@@ -81,58 +82,73 @@ string HuffmanTree::Decode(string s)
 {
 	string out;
 
-	// HuffmanTree::HuffmanNode *curr = root;
+	HuffmanTree::HuffmanNode *curr = root;
 
-	// for (int i = 0; i < s.size(); i++)
-	// {
-	// 	if (s[i] == '0')
-	// 		curr = curr->left;
-	// 	else
-	// 		curr = curr->right;
+	for (int i = 0; i < s.size(); i++)
+	{
+		if (s[i] == '0')
+			curr = curr->left;
+		else
+			curr = curr->right;
 
-	// 	// reached leaf node
-	// 	if (curr->left == NULL && curr->right == NULL)
-	// 	{
-	// 		out += curr->data;
-	// 		curr = root;
-	// 	}
-	// }
+		// reached leaf node
+		if (curr->left == NULL && curr->right == NULL)
+		{
+			out += curr->data.first;
+			curr = root;
+		}
+	}
 
-	return out + '\0';
+	return out;
 }
 
 // storeCodes stores all letters with its codes in class variable of type map
 void HuffmanTree::storeCodes(HuffmanTree::HuffmanNode *n, string str)
 {
-	if (n == NULL)
-		return;
-	if (n->data != '$')
-		codes[n->data] = str;
+	if (n->left == NULL && n->right == NULL)
+		codes[n->data.first] = str;
 
-	storeCodes(n->left, str + "0");
-	storeCodes(n->right, str + "1");
+	if (n->right != NULL)
+		storeCodes(n->right, str + "1");
+	if (n->left != NULL)
+		storeCodes(n->left, str + "0");
 }
 
 // printCodes prints all letter codes by tree leaves order
-void HuffmanTree::printCodes(HuffmanTree::HuffmanNode *n, string str)
+string HuffmanTree::CodeStructure()
 {
-	if (n == NULL)
-		return;
-	if (n->data != '$')
-		cout << str << " ";
+	return codeStructure(root, "");
+}
 
-	printCodes(n->left, str + "0");
-	printCodes(n->right, str + "1");
+string HuffmanTree::codeStructure(HuffmanTree::HuffmanNode *n, string str)
+{
+	if (n->left == NULL && n->right == NULL)
+		return str + "1";
+
+	if (n->left != NULL)
+		str = codeStructure(n->left, str + "0");
+
+	if (n->right != NULL)
+		str = codeStructure(n->right, str);
+
+	return str;
 }
 
 // printChars prints all letters by tree leaves order
-void HuffmanTree::printChars(HuffmanTree::HuffmanNode *n)
+string HuffmanTree::CharStructure()
 {
-	if (n == NULL)
-		return;
-	if (n->data != '$')
-		cout << n->data << " ";
+	return charStructure(root, "");
+}
 
-	printChars(n->left);
-	printChars(n->right);
+string HuffmanTree::charStructure(HuffmanTree::HuffmanNode *n, string str)
+{
+	if (n->left == NULL && n->right == NULL)
+		return str + n->data.first;
+
+	if (n->left != NULL)
+		str = charStructure(n->left, str);
+	if (n->right != NULL)
+		str = charStructure(n->right, str);
+
+	return str;
 }
