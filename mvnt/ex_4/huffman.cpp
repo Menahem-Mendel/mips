@@ -43,7 +43,7 @@ string HuffmanTree::Encode(string s)
 	}
 
 	// build min heap
-	priority_queue<HuffmanTree::HuffmanNode *, vector<HuffmanTree::HuffmanNode *>, HuffmanTree::HuffmanNode::compareNode> heap;
+	priority_queue<HuffmanTree::HuffmanNode *, vector<HuffmanTree::HuffmanNode *>, less<HuffmanTree::HuffmanNode *>> heap;
 
 	for (map<char, unsigned>::iterator i = freq.begin(); i != freq.end(); i++)
 		heap.push(new HuffmanTree::HuffmanNode(make_pair(i->first, i->second)));
@@ -151,4 +151,14 @@ string HuffmanTree::charStructure(HuffmanTree::HuffmanNode *n, string str)
 		str = charStructure(n->right, str);
 
 	return str;
+}
+
+bool operator<(const HuffmanTree::HuffmanNode &l, const HuffmanTree::HuffmanNode &r)
+{
+	return l.data.second < r.data.second;
+}
+
+bool operator>(const HuffmanTree::HuffmanNode &l, const HuffmanTree::HuffmanNode &r)
+{
+	return l.data.second > r.data.second;
 }
