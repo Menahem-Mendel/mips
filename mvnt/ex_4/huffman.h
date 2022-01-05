@@ -47,9 +47,11 @@ struct HuffmanTree
 private:
 	HuffmanNode *root;
 	map<char, string> codes;
+	map<string, char> chars;
 
 	void buildTree(string, string &, HuffmanNode *&, int &);
 	void storeCodes(HuffmanNode *, string);
+	void storeChars();
 	string decode(string);
 	string encode(string);
 	string codeStructure(HuffmanNode *, string);

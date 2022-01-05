@@ -108,7 +108,7 @@ string HuffmanTree::Decode(string code_s, string char_s, string encrypted)
 	string out;
 
 	*this = HuffmanTree(code_s, char_s);
-	storeCodes(root, "");
+	storeChars();
 
 	out = decode(encrypted);
 
@@ -140,12 +140,29 @@ string HuffmanTree::encode(string s)
 // return decoded string
 string HuffmanTree::decode(string s)
 {
-	string out;
+	string out, code;
 
-	for (map<char, string>::iterator iter = codes.begin(); iter != codes.end(); iter++)
-		out += iter->first;
+	for (int i = 0; i < s.size(); i++)
+	{
+		code += codes.at(s.at(i));
+
+		if (chars.find(code) != chars.end())
+		{
+			out += chars.at(code);
+			code = "";
+		}
+	}
 
 	return out;
+}
+
+// storeCodes stores all letters with its codes in class variable of type map
+void HuffmanTree::storeChars()
+{
+	storeCodes(root, "");
+
+	for (map<char, string>::iterator iter = codes.begin(); iter != codes.end(); iter++)
+		chars[iter->second] = iter->first;
 }
 
 // storeCodes stores all letters with its codes in class variable of type map
