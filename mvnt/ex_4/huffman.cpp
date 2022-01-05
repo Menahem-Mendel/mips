@@ -18,8 +18,11 @@ HuffmanTree::HuffmanTree()
 
 HuffmanTree::HuffmanTree(map<char, unsigned> freq)
 {
+	codes.clear();
+	root = NULL;
+
 	// build min heap
-	priority_queue<HuffmanTree::HuffmanNode *, vector<HuffmanTree::HuffmanNode *>, less<HuffmanTree::HuffmanNode *>> heap;
+	priority_queue<HuffmanTree::HuffmanNode *, vector<HuffmanTree::HuffmanNode *>, HuffmanTree::HuffmanNode::compareNode> heap;
 
 	for (map<char, unsigned>::iterator i = freq.begin(); i != freq.end(); i++)
 		heap.push(new HuffmanTree::HuffmanNode(make_pair(i->first, i->second)));
@@ -44,58 +47,57 @@ HuffmanTree::HuffmanTree(map<char, unsigned> freq)
 	root = heap.top();
 }
 
-HuffmanTree::HuffmanTree(string codes, string chars)
+HuffmanTree::HuffmanTree(string code_s, string char_s)
 {
-	buildTree(codes, chars, root, 0);
+	codes.clear();
+	root = NULL;
+
+	buildTree(code_s, char_s, root, 0);
 }
 
 // !!!
-void HuffmanTree::buildTree(string codes, string chars, HuffmanTree::HuffmanNode *n, int i)
+void HuffmanTree::buildTree(string code_s, string char_s, HuffmanTree::HuffmanNode *n, int i)
 {
-	if (codes.length() == i)
+	if (code_s.length() == i)
 		return;
 
-	if (codes.at(i) == '1')
+	if (code_s.at(i) == '1')
 	{
-		n = new HuffmanTree::HuffmanNode(make_pair(chars.at(0), 1));
-		chars.erase(chars.begin());
+		n = new HuffmanTree::HuffmanNode(make_pair(char_s.at(0), 0));
+		char_s.erase(char_s.begin());
 	}
-	else if (codes.at(i) == '0')
+	else if (code_s.at(i) == '0')
 	{
-		n = new HuffmanTree::HuffmanNode();
-		buildTree(codes, chars, n->left, i++);
-		buildTree(codes, chars, n->right, i++);
+		n = new HuffmanTree::HuffmanNode(make_pair(char_s.at(0), 0));
+
+		buildTree(code_s, char_s, n->left, i++);
+		buildTree(code_s, char_s, n->right, i++);
+	}
+	else
+	{
+		cout << "ERRROR" << endl;
 	}
 }
 
-string HuffmanTree::Decode(string codes, string chars, string encrypted)
+string HuffmanTree::Decode(string code_s, string char_s, string encrypted)
 {
 	string out;
 
-	*this = HuffmanTree(codes, chars);
+	*this = HuffmanTree(code_s, char_s);
+	storeCodes(root, "");
+
 	out = decode(encrypted);
 
 	return out;
 }
 
+// return decoded string
 string HuffmanTree::decode(string s)
 {
-	string out = "";
-	HuffmanTree::HuffmanNode *curr = root;
-	for (int i = 0; i < s.size(); i++)
-	{
-		if (s[i] == '0')
-			curr = curr->left;
-		else
-			curr = curr->right;
+	string out;
 
-		// reached leaf node
-		if (curr->left == NULL && curr->right == NULL)
-		{
-			out += curr->data.first;
-			curr = root;
-		}
-	}
+	for (map<char, string>::iterator iter = codes.begin(); iter != codes.end(); iter++)
+		out += iter->first;
 
 	return out;
 }
@@ -122,7 +124,12 @@ string HuffmanTree::Encode(string s)
 
 	storeCodes(root, ""); // build letter codes map
 
-	// return encoded string
+	return encode(s);
+}
+
+// return encoded string
+string HuffmanTree::encode(string s)
+{
 	string out;
 	for (int i = 0; i < s.size(); i++)
 		out += codes.at(s.at(i));

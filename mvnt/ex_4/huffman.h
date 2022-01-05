@@ -32,8 +32,16 @@ struct HuffmanTree
 		HuffmanNode(pair<char, unsigned> d, HuffmanNode *l, HuffmanNode *r) : data(d), left(l), right(r){};
 		HuffmanNode(const HuffmanNode &hn) : data(hn.data), left(hn.left), right(hn.right){};
 
-		friend bool operator<(const HuffmanNode &l, const HuffmanNode &r);
-		friend bool operator>(const HuffmanNode &l, const HuffmanNode &r);
+		// friend bool operator<(const HuffmanNode &l, const HuffmanNode &r);
+		// friend bool operator>(const HuffmanNode &l, const HuffmanNode &r);
+
+		struct compareNode
+		{
+			bool operator()(const HuffmanNode *l, const HuffmanNode *r)
+			{
+				return l->data.second > r->data.second;
+			}
+		};
 	};
 
 private:
@@ -43,6 +51,7 @@ private:
 	void buildTree(string, string, HuffmanNode *, int);
 	void storeCodes(HuffmanNode *, string);
 	string decode(string);
+	string encode(string);
 	string codeStructure(HuffmanNode *, string);
 	string charStructure(HuffmanNode *, string);
 };
