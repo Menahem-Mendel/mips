@@ -105,6 +105,9 @@ string HuffmanTree::Encode(string s)
 
 string HuffmanTree::Decode(string code_s, string char_s, string encrypted)
 {
+	if (char_s.size() != count(code_s.begin(), code_s.end(), '1'))
+		return "ERROR";
+
 	string out;
 
 	*this = HuffmanTree(code_s, char_s);
@@ -144,7 +147,7 @@ string HuffmanTree::decode(string s)
 
 	for (int i = 0; i < s.size(); i++)
 	{
-		code += codes.at(s.at(i));
+		code += s.at(i);
 
 		if (chars.find(code) != chars.end())
 		{

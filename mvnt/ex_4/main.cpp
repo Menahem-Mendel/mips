@@ -52,9 +52,11 @@ int main()
 			cin >> code_s;
 			cout << "enter the encoded text " << endl;
 			cin >> encoded_word;
-			cout << "The decoded string is" << endl;
 
-			cout << t.Decode(code_s, char_s, encrypted) << endl;
+			string decrypted = t.Decode(code_s, char_s, encoded_word);
+			cout << ((decrypted != "ERROR") ? "The decoded string is" : "") << endl;
+
+			cout << decrypted << endl;
 			break;
 		}
 	} while (choice != 'X');
