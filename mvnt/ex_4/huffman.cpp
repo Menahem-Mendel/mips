@@ -127,17 +127,6 @@ string HuffmanTree::CharStructure()
 	return charStructure(root, "");
 }
 
-// return decoded string
-string HuffmanTree::decode(string s)
-{
-	string out;
-
-	for (map<char, string>::iterator iter = codes.begin(); iter != codes.end(); iter++)
-		out += iter->first;
-
-	return out;
-}
-
 // return encoded string
 string HuffmanTree::encode(string s)
 {
