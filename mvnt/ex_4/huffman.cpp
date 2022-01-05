@@ -52,11 +52,12 @@ HuffmanTree::HuffmanTree(string code_s, string char_s)
 	codes.clear();
 	root = NULL;
 
-	buildTree(code_s, char_s, root, 0);
+	int i = 0;
+	buildTree(code_s, char_s, root, i);
 }
 
 // !!!
-void HuffmanTree::buildTree(string code_s, string char_s, HuffmanTree::HuffmanNode *n, int i)
+void HuffmanTree::buildTree(string code_s, string &char_s, HuffmanTree::HuffmanNode *&n, int &i)
 {
 	if (code_s.length() == i)
 		return;
@@ -64,51 +65,26 @@ void HuffmanTree::buildTree(string code_s, string char_s, HuffmanTree::HuffmanNo
 	if (code_s.at(i) == '1')
 	{
 		n = new HuffmanTree::HuffmanNode(make_pair(char_s.at(0), 0));
+
 		char_s.erase(char_s.begin());
 	}
 	else if (code_s.at(i) == '0')
 	{
-		n = new HuffmanTree::HuffmanNode(make_pair(char_s.at(0), 0));
+		n = new HuffmanTree::HuffmanNode();
 
-		buildTree(code_s, char_s, n->left, i++);
-		buildTree(code_s, char_s, n->right, i++);
+		buildTree(code_s, char_s, n->left, ++i);
+		buildTree(code_s, char_s, n->right, ++i);
 	}
 	else
 	{
-		cout << "ERRROR" << endl;
+		cout << "ERROR" << endl;
 	}
-}
-
-string HuffmanTree::Decode(string code_s, string char_s, string encrypted)
-{
-	string out;
-
-	*this = HuffmanTree(code_s, char_s);
-	storeCodes(root, "");
-
-	out = decode(encrypted);
-
-	return out;
-}
-
-// return decoded string
-string HuffmanTree::decode(string s)
-{
-	string out;
-
-	for (map<char, string>::iterator iter = codes.begin(); iter != codes.end(); iter++)
-		out += iter->first;
-
-	return out;
 }
 
 // Encode function returns encrypted string
 string HuffmanTree::Encode(string s)
 {
-	root = NULL;
-	codes.clear();
-
-	s.erase(std::remove_if(s.begin(), s.end(), ::isspace), s.end());
+	s.erase(remove_if(s.begin(), s.end(), ::isspace), s.end());
 
 	// build frequencies map
 	map<char, unsigned> freq;
@@ -127,12 +103,58 @@ string HuffmanTree::Encode(string s)
 	return encode(s);
 }
 
+string HuffmanTree::Decode(string code_s, string char_s, string encrypted)
+{
+	string out;
+
+	*this = HuffmanTree(code_s, char_s);
+	storeCodes(root, "");
+
+	out = decode(encrypted);
+
+	return out;
+}
+
+// printCodes prints all letter codes by tree leaves order
+string HuffmanTree::CodeStructure()
+{
+	return codeStructure(root, "");
+}
+
+// printChars prints all letters by tree leaves order
+string HuffmanTree::CharStructure()
+{
+	return charStructure(root, "");
+}
+
+// return decoded string
+string HuffmanTree::decode(string s)
+{
+	string out;
+
+	for (map<char, string>::iterator iter = codes.begin(); iter != codes.end(); iter++)
+		out += iter->first;
+
+	return out;
+}
+
 // return encoded string
 string HuffmanTree::encode(string s)
 {
 	string out;
 	for (int i = 0; i < s.size(); i++)
 		out += codes.at(s.at(i));
+
+	return out;
+}
+
+// return decoded string
+string HuffmanTree::decode(string s)
+{
+	string out;
+
+	for (map<char, string>::iterator iter = codes.begin(); iter != codes.end(); iter++)
+		out += iter->first;
 
 	return out;
 }
@@ -149,12 +171,6 @@ void HuffmanTree::storeCodes(HuffmanTree::HuffmanNode *n, string str)
 		storeCodes(n->left, str + "0");
 }
 
-// printCodes prints all letter codes by tree leaves order
-string HuffmanTree::CodeStructure()
-{
-	return codeStructure(root, "");
-}
-
 string HuffmanTree::codeStructure(HuffmanTree::HuffmanNode *n, string str)
 {
 	if (n->left == NULL && n->right == NULL)
@@ -167,12 +183,6 @@ string HuffmanTree::codeStructure(HuffmanTree::HuffmanNode *n, string str)
 		str = codeStructure(n->right, str);
 
 	return str;
-}
-
-// printChars prints all letters by tree leaves order
-string HuffmanTree::CharStructure()
-{
-	return charStructure(root, "");
 }
 
 string HuffmanTree::charStructure(HuffmanTree::HuffmanNode *n, string str)
@@ -188,12 +198,12 @@ string HuffmanTree::charStructure(HuffmanTree::HuffmanNode *n, string str)
 	return str;
 }
 
-bool operator<(const HuffmanTree::HuffmanNode &l, const HuffmanTree::HuffmanNode &r)
-{
-	return l.data.second < r.data.second;
-}
+// bool operator<(const HuffmanTree::HuffmanNode *l, const HuffmanTree::HuffmanNode *r)
+// {
+// 	return l->data.second < r->data.second;
+// }
 
-bool operator>(const HuffmanTree::HuffmanNode &l, const HuffmanTree::HuffmanNode &r)
-{
-	return l.data.second > r.data.second;
-}
+// bool operator>(const HuffmanTree::HuffmanNode *l, const HuffmanTree::HuffmanNode *r)
+// {
+// 	return l->data.second > r->data.second;
+// }

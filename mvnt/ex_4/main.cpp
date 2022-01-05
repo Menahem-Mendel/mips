@@ -43,18 +43,18 @@ int main()
 			break;
 		case 'D':
 			int n;
-			string char_structure, code_structure, encoded_word;
+			string char_s, code_s, encoded_word;
 			cout << "enter n " << endl;
 			cin >> n;
 			cout << "enter the letters " << endl;
-			cin >> char_structure;
+			cin >> char_s;
 			cout << "enter the encoded structure " << endl;
-			cin >> code_structure;
+			cin >> code_s;
 			cout << "enter the encoded text " << endl;
 			cin >> encoded_word;
 			cout << "The decoded string is" << endl;
 
-			cout << t.Decode(char_structure, code_structure, encrypted) << endl;
+			cout << t.Decode(code_s, char_s, encrypted) << endl;
 			break;
 		}
 	} while (choice != 'X');
